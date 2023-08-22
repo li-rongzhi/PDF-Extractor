@@ -8,13 +8,56 @@ from pdfminer.layout import LTTextContainer, LTTextLine, LTChar, LTImage, LTFigu
 import openpyxl
 from ExternalModel import ExternalModel, PromptTemplate
 from OCR import OCR
+import os
 
 
 class PDFExtractor:
     """A PDF extractor for extracting contents from PDF files"""
 
     @staticmethod
-    def extract_text(pdf_path, output_path, contents, externalModel=None):
+    def pipeline(*args):
+        """Pipeline of extracting content from a PDF file"""
+        with open('apikey.txt', 'r') as apikei_container:
+            apikey = apikei_container.read()
+        model = ExternalModel(apikey)
+        for file in args:
+            print("-" * 35)
+            print("Extracting content from " + file)
+            file_name = os.path.splitext(os.path.basename(file))[0]
+            output_directory = "testcases/outputs/" + file_name
+            os.makedirs(output_directory)
+            # extract images from PDF file
+            print("-" * 25)
+            print("Extracting images")
+            curr_dir = output_directory + "/images"
+            os.makedirs(curr_dir)
+            PDFExtractor.extract_images(file, curr_dir)
+            # flag indicate if the directory is deleted
+            flag = deal_with_dir(curr_dir)
+            # extract text from the output images
+            print("-" * 25)
+            print("Extracting text from output images")
+            # if there are images extracted
+            if not flag:
+                curr_dir = output_directory + "/text_from_images"
+                os.makedirs(curr_dir)
+                PDFExtractor.extract_text_from_images(
+                    output_directory + "/images", curr_dir, external_model=model)
+            # extract tables from PDF file
+            print("-" * 25)
+            print("Extracting tables")
+            PDFExtractor.extract_tables(file, output_directory + "/tables.xlsx",
+                                        external_model=model, set_wrap_text=True)
+            # extract text from PDF file
+            print("-" * 25)
+            print("Extracting text")
+            PDFExtractor.extract_text(file, output_directory + "/text_part.txt", external_model=model)
+            print("-" * 25)
+            print("Done!")
+            print("-" * 35)
+
+    @staticmethod
+    def extract_text(pdf_path, output_path, external_model=None):
         """Extract text from PDF file"""
         try:
             pdf_reader = PyPDF2.PdfReader(pdf_path)
@@ -27,37 +70,36 @@ class PDFExtractor:
                     page = pdf_reader.pages[page_num]
                     text = page.extract_text()
                     # get footnotes of the current page
-                    current_page = footnotes[str(page_num)]
+                    # if footnotes is not empty
+                    if footnotes:
+                        current_page = footnotes[str(page_num)]
 
                     # use external model to correct grammar and spelling
                     # in case of random errors when extracting text
-                    if externalModel:
-                        text = externalModel.get_response(text, PromptTemplate.GRAMMAR_CORRECTION)
+                    if external_model:
+                        text = external_model.get_response(text, PromptTemplate.GRAMMAR_CORRECTION)
 
                     # delete footnotes from the text
                     # if there are footnotes in current page
-                    if current_page:
-                        for footnote in footnotes:
+                    if footnotes and current_page:
+                        for footnote in current_page:
                             if footnote in text:
                                 text = text.replace(footnote, "")
 
-                    for content in contents:
-                        if content in text:
-                            text = text.replace(content, "")
                     # write into the output file
                     output_file.write(f"Page {page_num + 1}:\n{text}\n")
                     # add the footnotes
-                    if current_page:
+                    if footnotes and current_page:
                         output_file.write(
-                            "Footnotes:\n" + "\n".join(f"{i+1}:{note}"
-                                                       for i, note in enumerate(current_page))+"\n\n")
-
+                            "\nFootnotes:\n" + "\n".join(f"{i + 1}:{note}"
+                                                         for i, note in enumerate(current_page)) + "\n\n")
+                    print(f"page {page_num} finished")
         except FileNotFoundError:
             # handle file not found error
             print("File not found")
 
     @staticmethod
-    def extract_tables(pdf_path, output_path, externalModel=None, set_wrap_text=False):
+    def extract_tables(pdf_path, output_path, external_model=None, set_wrap_text=False):
         """Extract tables from PDF file"""
         try:
             # extract tables directly using tabula.read_pdf
@@ -104,10 +146,11 @@ class PDFExtractor:
                     new_table.reset_index(drop=True, inplace=True)
 
                 # if externalModel is passed into the method
-                if externalModel:
+                if external_model:
                     # check if the headers of the table are real headers
                     cols = list(table.columns)
-                    is_header = externalModel.get_response("; ".join(cols), PromptTemplate.ISHEADER_CHECK) in ("Yes", "Yes.")
+                    is_header = external_model.get_response("; ".join(cols), PromptTemplate.ISHEADER_CHECK) in (
+                        "Yes", "Yes.")
 
                     # if they don't seem to be header
                     # check if it should combine with the last row of previous table
@@ -117,16 +160,16 @@ class PDFExtractor:
                         # combine column names(headers) with values in the first row
                         # and then send to the external model
                         cols_and_next = [f"{col} {val}" for col, val in zip(new_table.columns, new_table.iloc[0])]
-                        answer_next = [externalModel.get_response(pair, PromptTemplate.CONSISTENCY_CHECK)
-                                for pair in cols_and_next]
+                        answer_next = [external_model.get_response(pair, PromptTemplate.CONSISTENCY_CHECK)
+                                       for pair in cols_and_next]
                         combine_with_next = all([ans in ("Yes.", "Yes") for ans in answer_next])
                         # if there is previous tables and number of columns are the same
                         if results and (len(results[-1].columns) == len(new_table.columns)):
                             # combine column names(headers) with values in the last row of previous table
                             cols_and_previous = [f"{val} {col}"
                                                  for val, col in zip(results[-1].iloc[-1], new_table.columns)]
-                            answer_previous = [externalModel.get_response(pair, PromptTemplate.CONSISTENCY_CHECK)
-                                   for pair in cols_and_previous]
+                            answer_previous = [external_model.get_response(pair, PromptTemplate.CONSISTENCY_CHECK)
+                                               for pair in cols_and_previous]
                             combine_with_previous = all([ans in ("Yes.", "Yes") for ans in answer_previous])
 
                         # if headers need to combine with both
@@ -147,13 +190,17 @@ class PDFExtractor:
                             new_row = pd.DataFrame([cols_and_next], columns=range(1, len(new_table.columns) + 1))
                             new_table = pd.concat([new_row, new_table[1:]], ignore_index=True)
                 results.append(new_table)
+
+            # if no table extracted
+            # then skip the writing phase
+            if not results:
+                return
             # write tables into Excel as one table per sheet
             with pd.ExcelWriter(output_path) as writer:
                 for i, table in enumerate(results):
                     table.to_excel(writer, sheet_name=f'Sheet{i}', index=False)
 
             # set cells attribute wrapText=True for usability
-            contents = []
             if set_wrap_text:
                 workbook = openpyxl.load_workbook(output_path)
                 # loop through all cells with content in the worksheet
@@ -162,11 +209,9 @@ class PDFExtractor:
                     for row in worksheet.iter_rows():
                         for cell in row:
                             if cell.value is not None:
-                                contents.append(cell.value)
                                 cell.alignment = openpyxl.styles.Alignment(wrapText=True)
                 # save the modified workbook (overwriting the original file)
                 workbook.save(output_path)
-            return contents
         except FileNotFoundError:
             print("File not found")
 
@@ -220,8 +265,8 @@ class PDFExtractor:
             print("File not found")
 
     @staticmethod
-    def extract_text_from_images(images_container, output_folder):
-        OCR.extract_in_batch(images_container, output_folder)
+    def extract_text_from_images(images_container, output_folder, external_model=None):
+        OCR.extract_in_batch(images_container, output_folder, external_model=external_model)
 
     @staticmethod
     def extract_footnotes(pdf_path, font_size_threshold_factor=0.95, height_threshold_factor=0.2):
@@ -237,56 +282,49 @@ class PDFExtractor:
                                 if isinstance(character, LTChar):
                                     font_sizes.append(character.size)
                                     break
-        # calculate the most common font size as the size for body
-        font_size_counter = Counter(font_sizes)
-        most_common_font_size = font_size_counter.most_common(1)[0][0]
-        # use a factor to set a threshold for font size of footnotes
-        footnote_font_size_threshold = most_common_font_size * font_size_threshold_factor
-        # create a dictionary to hold footnotes in different pages
-        footnotes = {}
-        # iterate again to extract footnotes
-        # check if font size and position satisfy the condition
-        # if so, extract that part and add into footnotes
-        page_number = 0
-        for page_layout in extract_pages(pdf_path):
-            current_page = []
-            page_height = page_layout.height
-            for element in page_layout:
-                if isinstance(element, LTTextContainer):
-                    for text_line in element:
-                        if isinstance(text_line, LTTextLine):
-                            for character in text_line:
-                                if isinstance(character, LTChar):
-                                    font_size = character.size
-                                    break
-                            y_position = text_line.y0
-                            text = text_line.get_text().strip()
-                            foot_note_height_threshold = page_height * height_threshold_factor
-                            if font_size <= footnote_font_size_threshold and y_position <= foot_note_height_threshold:
-                                current_page.append(text)
-            footnotes[f'{page_number}'] = current_page
-            page_number += 1
-        return footnotes
+        try:
+            # calculate the most common font size as the size for body
+            font_size_counter = Counter(font_sizes)
+
+            most_common_font_size = font_size_counter.most_common(1)[0][0]
+            # use a factor to set a threshold for font size of footnotes
+            footnote_font_size_threshold = most_common_font_size * font_size_threshold_factor
+            # create a dictionary to hold footnotes in different pages
+            footnotes = {}
+            # iterate again to extract footnotes
+            # check if font size and position satisfy the condition
+            # if so, extract that part and add into footnotes
+            page_number = 0
+            for page_layout in extract_pages(pdf_path):
+                current_page = []
+                page_height = page_layout.height
+                for element in page_layout:
+                    if isinstance(element, LTTextContainer):
+                        for text_line in element:
+                            if isinstance(text_line, LTTextLine):
+                                for character in text_line:
+                                    if isinstance(character, LTChar):
+                                        font_size = character.size
+                                        break
+                                y_position = text_line.y0
+                                text = text_line.get_text().strip()
+                                foot_note_height_threshold = page_height * height_threshold_factor
+                                if font_size <= footnote_font_size_threshold and y_position <= foot_note_height_threshold:
+                                    current_page.append(text)
+                footnotes[f'{page_number}'] = current_page
+                page_number += 1
+            return footnotes
+        except IndexError as e:
+            print("No text through out the file")
 
 
-files = ['Tritech Announcement (MOU-NUS) 21 Nov 2008',
-         'VIMA - Model Non-Disclosure Agreement (22.11.2019)',
-         'Basic-Non-Disclosure-Agreement', 'mndsstecmou_annex',
-         'Annex A - List of MOUs signed at the 3rd SCI JIC Meeting',
-         'Schedules-to-MOU', 'L00_module_info',
-         'ImageNet classification with deep convolutional neural networks', 'combinepdf']
-file_name = files[4]
-pdf_path = f'testcases/inputs/{file_name}.pdf'
-output_path = f'testcases/outputs/{file_name}.txt'
-
-output_dir = "testcases/outputs/Schedules_to_MOU"
-output_excel = f"testcases/outputs/{file_name}.xlsx"
-
-model = ExternalModel("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")
-# content = """Copyright © 20 20 NonDisclosureAgreement.com . All Rights Reserved.  Page 1 of 2 NON -DISCLOSURE AGREEMENT  (NDA)
-# This Nondisclosure Agreement or ("Agreement") has been  entered into on the date of
-# ______________________________ and is by and between :"""
-# PDFExtractor.extract_tables(pdf_path, output_excel)
-contents = PDFExtractor.extract_tables(pdf_path, "tables.xlsx", externalModel=model, set_wrap_text=True)
-PDFExtractor.extract_text(pdf_path, 'table_extraction.txt', contents, externalModel=model)
+def deal_with_dir(dir_path):
+    """Delete the target directory if empty"""
+    if len(os.listdir(dir_path)) == 0:
+        try:
+            os.rmdir(dir_path)
+            return True
+        except OSError as e:
+            print(f"Error: {e}")
+    return False
 

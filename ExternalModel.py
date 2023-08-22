@@ -8,7 +8,7 @@ class PromptTemplate(Enum):
     CONSISTENCY_CHECK = "Do you think the following phrases or sentences reasonable? " \
                        + "Just tell me 'Yes' or 'No'."
     ISHEADER_CHECK = "Do you think the following words are headers of a table? Just tell me 'Yes' or 'No'."
-    GRAMMAR_CORRECTION = "Correct grammar and spellings of the following paragraph."
+    GRAMMAR_CORRECTION = "Correct grammar, spellings and whitespace usage of the following paragraph."
 
 
 class ExternalModel:
