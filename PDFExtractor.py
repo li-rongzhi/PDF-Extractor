@@ -15,10 +15,10 @@ class PDFExtractor:
     """A PDF extractor for extracting contents from PDF files"""
 
     @staticmethod
-    def pipeline(*args):
+    def pipeline(*args: str):
         """Pipeline of extracting content from a PDF file"""
-        with open('apikey.txt', 'r') as apikei_container:
-            apikey = apikei_container.read()
+        with open('apikey.txt', 'r') as apikey_container:
+            apikey = apikey_container.read()
         model = ExternalModel(apikey)
         for file in args:
             print("-" * 35)
@@ -57,7 +57,7 @@ class PDFExtractor:
             print("-" * 35)
 
     @staticmethod
-    def extract_text(pdf_path, output_path, external_model=None):
+    def extract_text(pdf_path: str, output_path: str, external_model: ExternalModel = None):
         """Extract text from PDF file"""
         try:
             pdf_reader = PyPDF2.PdfReader(pdf_path)
@@ -76,7 +76,7 @@ class PDFExtractor:
 
                     # use external model to correct grammar and spelling
                     # in case of random errors when extracting text
-                    if external_model:
+                    if text and external_model:
                         text = external_model.get_response(text, PromptTemplate.GRAMMAR_CORRECTION)
 
                     # delete footnotes from the text
@@ -99,7 +99,8 @@ class PDFExtractor:
             print("File not found")
 
     @staticmethod
-    def extract_tables(pdf_path, output_path, external_model=None, set_wrap_text=False):
+    def extract_tables(pdf_path: str, output_path: str,
+                       external_model: ExternalModel = None, set_wrap_text: bool = False):
         """Extract tables from PDF file"""
         try:
             # extract tables directly using tabula.read_pdf
@@ -124,7 +125,7 @@ class PDFExtractor:
                     if table.iloc[index].isna().all() or index == len(table) - 1:
                         # then merge lines into one row
                         concatenated = table.iloc[start:index + 1].apply(
-                            lambda row: ' '.join(map(str, row.dropna())), axis=0)
+                            lambda r: ' '.join(map(str, r.dropna())), axis=0)
                         new_row = pd.DataFrame([concatenated.tolist()], columns=table.columns)
                         new_table = pd.concat([new_table, new_row], ignore_index=True)
                         start = index + 1
@@ -136,7 +137,7 @@ class PDFExtractor:
                     if (row == "").any():
                         indexes.append(index)
                         concatenated = new_table.iloc[index - 1:index + 1].apply(
-                            lambda row: ' '.join(map(str, row.dropna())), axis=0)
+                            lambda r: ' '.join(map(str, r.dropna())), axis=0)
                         new_row = pd.DataFrame([concatenated.tolist()], columns=new_table.columns)
                         new_table[index - 1:index] = new_row
                 # if drop raws
@@ -216,15 +217,19 @@ class PDFExtractor:
             print("File not found")
 
     @staticmethod
-    def locate_images(pdf_path):
+    def locate_images(pdf_path: str):
+        """
+        Locate images in PDF file
+        Returns page numbers
+        """
 
-        def extract_LTImage_from_LTFigure(page_number, element):
+        def extract_LTImage_from_LTFigure(page_num: int, component):
             results = []
-            for item in element:
+            for item in component:
                 if isinstance(item, LTImage):
-                    results.append((page_number, item))
+                    results.append((page_num, item))
                 elif isinstance(item, LTFigure):
-                    results.extend(extract_LTImage_from_LTFigure(page_number, item))
+                    results.extend(extract_LTImage_from_LTFigure(page_num, item))
             return results
 
         pages_contain_image = []
@@ -241,7 +246,7 @@ class PDFExtractor:
         return pages_contain_image
 
     @staticmethod
-    def extract_images(pdf_path, output_folder):
+    def extract_images(pdf_path: str, output_folder: str):
         """Extract images from PDF file"""
         try:
             pdf_document = fitz.open(pdf_path)
@@ -265,11 +270,15 @@ class PDFExtractor:
             print("File not found")
 
     @staticmethod
-    def extract_text_from_images(images_container, output_folder, external_model=None):
+    def extract_text_from_images(images_container: str, output_folder: str,
+                                 external_model: ExternalModel = None):
+        """Extract text from images"""
         OCR.extract_in_batch(images_container, output_folder, external_model=external_model)
 
     @staticmethod
-    def extract_footnotes(pdf_path, font_size_threshold_factor=0.95, height_threshold_factor=0.2):
+    def extract_footnotes(pdf_path: str, font_size_threshold_factor: float = 0.95,
+                          height_threshold_factor: float = 0.2):
+        """Extract footnotes from the PDF file according to its position and font size"""
         font_sizes = []
         # iterate through elements in each page
         # record font sizes
@@ -285,7 +294,6 @@ class PDFExtractor:
         try:
             # calculate the most common font size as the size for body
             font_size_counter = Counter(font_sizes)
-
             most_common_font_size = font_size_counter.most_common(1)[0][0]
             # use a factor to set a threshold for font size of footnotes
             footnote_font_size_threshold = most_common_font_size * font_size_threshold_factor
@@ -302,6 +310,7 @@ class PDFExtractor:
                     if isinstance(element, LTTextContainer):
                         for text_line in element:
                             if isinstance(text_line, LTTextLine):
+                                font_size = None
                                 for character in text_line:
                                     if isinstance(character, LTChar):
                                         font_size = character.size
@@ -309,16 +318,17 @@ class PDFExtractor:
                                 y_position = text_line.y0
                                 text = text_line.get_text().strip()
                                 foot_note_height_threshold = page_height * height_threshold_factor
-                                if font_size <= footnote_font_size_threshold and y_position <= foot_note_height_threshold:
+                                if font_size and font_size <= footnote_font_size_threshold \
+                                        and y_position <= foot_note_height_threshold:
                                     current_page.append(text)
                 footnotes[f'{page_number}'] = current_page
                 page_number += 1
             return footnotes
         except IndexError as e:
-            print("No text through out the file")
+            print(f"No text through out the file; {e}")
 
 
-def deal_with_dir(dir_path):
+def deal_with_dir(dir_path: str):
     """Delete the target directory if empty"""
     if len(os.listdir(dir_path)) == 0:
         try:
@@ -327,4 +337,3 @@ def deal_with_dir(dir_path):
         except OSError as e:
             print(f"Error: {e}")
     return False
-
