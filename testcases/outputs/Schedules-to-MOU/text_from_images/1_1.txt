@@ -1,6 +1,6 @@
 Schedule A
 
-The list of Products covered by the Scheme
+The list of products covered by the scheme
 
 LIST OF PRODUCTS
 
@@ -36,6 +36,7 @@ Coconut
 
 - Coconut Milk and Cream
 - Nata de Coco
+
 Deactivated Carbon
 - Coco Shell Charcoal
 Coconut Water

@@ -8,14 +8,11 @@ No information provided in this model document, which is part of the Venture Cap
 NON-DISCLOSURE AGREEMENT
 
 Footnotes:
-1:©2018  Singapore  Academy  of  Law,  Singapore  Venture  Capital  &  Private  Equity  Association  and  other  contributors.  You  may
-2:modify  this  document  for  your  use  in  transactions,  but  please  do  not  publicly  disseminate  a  modified  version  of  this  document
-3:without seeking prior approval from the copyright owners.
-
+©2018 Singapore Academy of Law, Singapore Venture Capital & Private Equity Association, and other contributors. You may modify this document for your use in transactions, but please do not publicly disseminate a modified version of this document without seeking prior approval from the copyright owners.
 Page 2:
 Explanatory Note
 
-This model non-disclosure agreement assumes that a company is providing confidential information about itself to a potential investor looking to invest in such a company. The non-disclosure agreement should be entered into with the recipient before the distribution of the confidential information. For early stage financing rounds (including Series A financing rounds), it is common for VCs/other investors to not enter into non-disclosure agreements and instead enter into a term sheet with the company/founders directly, and the company would take this into account in deciding what information to provide to such investors. A non-disclosure agreement may, however, still be relevant where the investor is a strategic investor/competitor.
+This model non-disclosure agreement assumes a company is providing confidential information about itself to a potential investor looking to invest in such a company. The non-disclosure agreement should be entered into with the recipient before the distribution of the confidential information. For early stage financing rounds (including Series A financing rounds), it is common for VCs/other investors to not enter into non-disclosure agreements and instead enter into a term sheet with the company/founders directly, and the company would take this into account in deciding what information to provide to such investors. A non-disclosure agreement may, however, still be relevant where the investor is a strategic investor/competitor.
 Page 3:
 TABLE OF CONTENTS
 
@@ -55,13 +52,13 @@ Whereas:
 
 (B) It is envisaged that the Disclosing Party will disclose Confidential Information (as defined below) to the Receiving Party in connection with the Receiving Party's evaluation of the Proposed Transaction (the "Purpose").
 
-(C) The Confidential Information belongs to the Disclosing Party and the Receiving Party has agreed to enter into this Agreement and comply with the terms set out in this Agreement concerning the disclosure, use and protection of the Confidential Information.
+(C) The Confidential Information belongs to the Disclosing Party and the Receiving Party has agreed to enter into this Agreement and comply with the terms set out in this Agreement concerning the disclosure, use, and protection of the Confidential Information.
 
 It is agreed as follows:
 
 1. Confidential Information
 
-1.1 The term "Confidential Information" for the purpose of this Agreement shall mean any and all information and materials relating to the [Disclosing Party] disclosed, furnished or communicated (whether orally, provided such oral information is reduced to writing within 30 days after disclosure, or in writing, machine readable form, text, drawings, photographs, graphics, designs, plans, presentations, on-site visits or any other form whatsoever) by the Disclosing Party (whether through any of the Disclosing Party's Representatives (as defined below) or otherwise), directly or indirectly to the Receiving Party (or to the Receiving Party through the Receiving Party's Representatives), whether on, before or after the date hereof, in connection with the Purpose, but shall not include any such information:
+1.1 The term "Confidential Information" for the purpose of this Agreement shall mean any and all information and materials relating to the [Disclosing Party] disclosed, furnished, or communicated (whether orally, provided such oral information is reduced to writing within 30 days after disclosure, or in writing, machine-readable form, text, drawings, photographs, graphics, designs, plans, presentations, on-site visits, or any other form whatsoever) by the Disclosing Party (whether through any of the Disclosing Party's Representatives (as defined below) or otherwise), directly or indirectly to the Receiving Party (or to the Receiving Party through the Receiving Party's Representatives), whether on, before, or after the date hereof, in connection with the Purpose, but shall not include any such information:
 
 1.1.1 where the disclosure is made to the Representatives for the Purpose, on terms that each Representative receiving the information agrees to comply with the provisions of Clause 2 below in respect of such information as if it were a party to this Agreement;
 
@@ -69,15 +66,9 @@ It is agreed as follows:
 
 1.1.3 which relates to a Party who has given its prior written consent to the disclosure.
 
-Drafting Note: To be amended depending on the subject matter of the information disclosed.
-
-Drafting Note: To be narrowed as necessary depending on the business of the Company, the information to be protected 
-
 Footnotes:
-1:1 Drafting Note: To be amended depending on the subject matter of the information disclosed.
-2:2 Drafting Note: To be narrowed as necessary depending on the business of the Company, the information to be protected
-3:and the stage of the investment.
-
+Drafting Note: To be amended depending on the subject matter of the information disclosed. 
+Drafting Note: To be narrowed as necessary depending on the business of the Company, the information to be protected, and the stage of the investment.
 Page 5:
 1.1.4 which is independently developed by the Receiving Party or is lawfully in its possession prior to the disclosure to it of the information;
 
@@ -101,11 +92,10 @@ Page 5:
 
 3. Restrictive Covenants
 
-3.1 The Receiving Party shall not, and shall procure that its Representatives who have actually received Confidential Information shall not, at all times (except with the prior written consent of the Disclosing Party), use the Confidential Information to compete with the Disclosing Party or to solicit or hire any employees or contractors of the Disclosing Party.
+3.1 The Receiving Party shall not, and shall procure that its Representatives who have actually received Confidential Information shall not, at all times (except with the prior written consent of the Disclosing Party), use, disclose, or make available the Confidential Information to any third party.
 
 Footnotes:
-1:3 Drafting Note: To consider whether this Clause is necessary if the prospective investor is a strategic investor / competitor.
-
+Drafting Note: Consider whether this clause is necessary if the prospective investor is a strategic investor/competitor.
 Page 6:
 (Disclosing Party) directly or indirectly, either on its own account or in conjunction with or on behalf of any other person, for a period of [●] months from the date of this Agreement:
 
@@ -187,7 +177,7 @@ This Agreement shall be governed by, and construed in accordance with, the laws 
 Page 9:
 17. Dispute Resolution
 
-In the event of any dispute arising out of or in connection with this Agreement, including any question regarding its existence, validity or termination (the "Dispute"), a Party may give notice to the other Party to submit the Dispute to mediation to the Singapore Mediation Centre ("SMC").5
+In the event of any dispute arising out of or in connection with this Agreement, including any question regarding its existence, validity or termination (the "Dispute"), a Party may give notice to the other Party to submit the Dispute to mediation to the Singapore Mediation Centre ("SMC").
 
 If the Parties agree to submit such Dispute to SMC, the Parties will have [30 days] from the date of submission of such Dispute to SMC to resolve such Dispute in accordance with SMC's Mediation Procedure in force for the time being. Unless otherwise agreed by the Parties, the mediator(s) will be appointed by SMC and the mediation will take place in Singapore in the English language and the Parties shall be bound by any settlement agreement reached.
 
@@ -195,37 +185,27 @@ If the Parties do not agree to submit the Dispute to SMC or the Parties are unab
 
 [OPTION 1: COURT]
 
-[the Parties irrevocably agree that the courts of Singapore are to have exclusive jurisdiction to settle any such Dispute.]6
+[the Parties irrevocably agree that the courts of Singapore are to have exclusive jurisdiction to settle any such Dispute.]
 
 [OPTION 2: ARBITRATION]
 
-[the Dispute shall be referred to and finally resolved by arbitration administered by the Singapore International Arbitration Centre7 in accordance with the Arbitration Rules of the Singapore International Arbitration Centre for the time being in force, which rules are deemed to be incorporated by reference in this Clause 17. The seat of the arbitration shall be Singapore. The Tribunal shall consist of one arbitrator. The language of the arbitration shall be English.]8
+[the Dispute shall be referred to and finally resolved by arbitration administered by the Singapore International Arbitration Centre in accordance with the Arbitration Rules of the Singapore International Arbitration Centre for the time being in force, which rules are deemed to be incorporated by reference in this Clause 17. The seat of the arbitration shall be Singapore. The Tribunal shall consist of one arbitrator. The language of the arbitration shall be English.]
 
 18. Process Agent
 
 The [Disclosing Party/Receiving Party] irrevocably appoints [●] (the "process agent") with its address at [●] as its agent to receive, for it and on its behalf, service of process in Singapore in any legal action or proceedings arising out of or in connection with this Agreement. Items served at this address must be marked for the personal attention of the [●]. Such service shall be deemed completed on delivery to the process agent (whether or not it is forwarded to and received by the [Disclosing Party/Receiving Party]). If for any reason the process agent ceases to be able to act as such or no longer has an address in Singapore, the [Disclosing Party/Receiving Party] irrevocably agrees to appoint a substitute process agent acceptable to the [Receiving Party/Disclosing Party], and to deliver to the [Receiving Party/Disclosing Party].
 
 Footnotes:
-1:Information that has been disclosed.
-2:5  Drafting  Note:  The  Singapore  Mediation  Centre's  website  may  be  accessed  at:  http://www.mediation.com.sg/.  The
-3:Singapore  International  Mediation  Centre  is  another  designated  mediation  service  provider  in  Singapore,  and  its  website
-4:may be accessed at: http://simc.com.sg/.
-5:6 Drafting Note: Parties may also wish to consider the Singapore International Commercial Court as a dispute forum and its
-6:website may be accessed at: https://www.sicc.gov.sg/.
-7:7 Drafting Note: The Singapore International Arbitration Centre's website may be accessed at: http://www.siac.org.sg/.
-8:8 Drafting Note: To delete accordingly depending on the preferred dispute resolution mechanism.
-
+Information that has been disclosed. 5 Drafting Note: The Singapore Mediation Centre's website may be accessed at: http://www.mediation.com.sg/. The Singapore International Mediation Centre is another designated mediation service provider in Singapore, and its website may be accessed at: http://simc.com.sg/. 6 Drafting Note: Parties may also wish to consider the Singapore International Commercial Court as a dispute forum, and its website may be accessed at: https://www.sicc.gov.sg/. 7 Drafting Note: The Singapore International Arbitration Centre's website may be accessed at: http://www.siac.org.sg/. 8 Drafting Note: To delete accordingly depending on the preferred dispute resolution mechanism.
 Page 10:
 Party: a copy of the new process agent's written acceptance of that appointment, within thirty (30) days.
 
-9 Drafting Note: To be included where a Party is not Singapore incorporated. Please note that this clause is not required if 
+Drafting Note: To be included where a Party is not Singapore incorporated. Please note that this clause is not required if 
 
 Footnotes:
-1:9 Drafting Note: To be included where a Party is not Singapore incorporated.  Please note that this clause is not required if
-2:arbitration is selected in Clause 17 as the preferred dispute resolution mechanism.
-
+Drafting Note: This clause should be included when a Party is not incorporated in Singapore. Please note that this clause is not necessary if arbitration is chosen as the preferred method of dispute resolution in Clause 17.
 Page 11:
-©2018 Singapore Academy of Law, Singapore Venture Capital & Private Equity Association, and other contributors. You may  
+  
 
 In consideration of the Disclosing Party making the Confidential Information available to the Receiving Party, the Receiving Party agrees to be bound by the terms of this Agreement.
 
@@ -247,10 +227,7 @@ Name:
 Address:
 
 Footnotes:
-1:©2018 Singapore Academy of Law, Singapore Venture Capital & Private Equity Association and other contributors. You may
-2:modify this document for your use in transactions, but please do not publicly disseminate a modified version of this document
-3:without seeking prior approval from the copyright owners.
-
+©2018 Singapore Academy of Law, Singapore Venture Capital & Private Equity Association, and other contributors. You may modify this document for your use in transactions, but please do not publicly disseminate a modified version of this document without seeking prior approval from the copyright owners.
 Page 12:
 The Receiving Party
 

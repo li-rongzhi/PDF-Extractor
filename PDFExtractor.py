@@ -1,14 +1,16 @@
 from collections import Counter
+from io import StringIO
+
 import PyPDF2
 import pandas as pd
 from tabula import read_pdf
+import os
 import fitz
 from pdfminer.high_level import extract_pages
 from pdfminer.layout import LTTextContainer, LTTextLine, LTChar, LTImage, LTFigure
 import openpyxl
 from ExternalModel import ExternalModel, PromptTemplate
 from OCR import OCR
-import os
 
 
 class PDFExtractor:
@@ -64,6 +66,10 @@ class PDFExtractor:
             with open(output_path, 'a', encoding="utf-8") as output_file:
                 # extract footnotes in the pdf file
                 footnotes = PDFExtractor.extract_footnotes(pdf_path)
+                print(footnotes)
+                # use external model to process extracted footnotes
+                if footnotes:
+                    processed_footnotes = PDFExtractor.process_footnotes(footnotes.copy(), external_model=external_model)
                 # iterate through pages of the pdf file
                 for page_num in range(len(pdf_reader.pages)):
                     # extract text from current page
@@ -85,15 +91,16 @@ class PDFExtractor:
                         for footnote in current_page:
                             if footnote in text:
                                 text = text.replace(footnote, "")
-
+                        current_page = processed_footnotes[str(page_num)]
+                        if current_page in text:
+                            text = text.replace(current_page, "")
                     # write into the output file
                     output_file.write(f"Page {page_num + 1}:\n{text}\n")
                     # add the footnotes
                     if footnotes and current_page:
                         output_file.write(
-                            "\nFootnotes:\n" + "\n".join(f"{i + 1}:{note}"
-                                                         for i, note in enumerate(current_page)) + "\n\n")
-                    print(f"page {page_num} finished")
+                            "\nFootnotes:\n" + current_page + "\n")
+                    print(f"page {page_num+1} finished")
         except FileNotFoundError:
             # handle file not found error
             print("File not found")
@@ -262,7 +269,7 @@ class PDFExtractor:
                     base_image = pdf_document.extract_image(xref)
                     image_data = base_image["image"]
                     image_type = base_image["ext"]
-                    with open(f"{output_folder}/{page_number + 1}_{img_index + 1}.{image_type}",
+                    with open(f"{output_folder}/{page_number}_{img_index + 1}.{image_type}",
                               "wb") as img_file:
                         img_file.write(image_data)
             pdf_document.close()
@@ -326,6 +333,41 @@ class PDFExtractor:
             return footnotes
         except IndexError as e:
             print(f"No text through out the file; {e}")
+
+    @staticmethod
+    def process_footnotes(footnotes: dict, external_model: ExternalModel):
+        """Process footnotes with external model"""
+        for key, values in footnotes.items():
+            if values:
+                contents = " ".join(values)
+                # only process those with a reasonable length
+                if len(contents) >= 5:
+                    response = external_model.get_response(contents, PromptTemplate.GRAMMAR_CORRECTION)
+                    footnotes[key] = response
+                    continue
+            footnotes[key] = ""
+        return footnotes
+
+    @staticmethod
+    def restructure_tables(input_files: list, output_path: str, external_model: ExternalModel):
+        """
+        Restructure tables from unstructured text
+        ps: due to dynamic response from external model, this method cannot be generalized
+        """
+        content = ""
+        for input_path in input_files:
+            with open(input_path, "r") as file:
+                content += file.read()
+        response = external_model.get_response(content, PromptTemplate.TABLE_RESTRUCTURE)
+        try:
+            lines = list(filter(lambda line: line.startswith("\""), response.split("\n")))
+            contents = "\n".join(lines)
+            df = pd.read_csv(StringIO(contents))
+            df.to_excel(output_path, index=False)
+        except pd.errors.EmptyDataError as e:
+            print(e)
+        except Exception as e:
+            print(type(e), e)
 
 
 def deal_with_dir(dir_path: str):

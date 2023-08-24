@@ -6,12 +6,12 @@ AUTHORITY
 
 GIMDAsg | #IMDigitalArchitect
 
-Corrected version:
+Corrected Version:
 
-Vy, iygocomm
-MEDIA
-\ f| DEVELOPMENT
+Vy, IygoComm
+Media
+\ f| Development
 
-AUTHORITY
+Authority
 
 GIMDAsg | #IMDigitalArchitect

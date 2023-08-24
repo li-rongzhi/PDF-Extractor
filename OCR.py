@@ -21,7 +21,7 @@ class OCR:
         try:
             text = pytesseract.image_to_string(img)
             # utilise external model to polish the extracted content
-            if external_model:
+            if text and external_model:
                 text = external_model.get_response(text, PromptTemplate.GRAMMAR_CORRECTION)
             # if there is text extracted
             if text:
