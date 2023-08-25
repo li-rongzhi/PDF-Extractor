@@ -1,8 +1,8 @@
-# PDFExtractor
+# PDF Extractor
 
 ### Description:
 
-The PDF content extractor can extract content from PDF files, 
+This PDF content extractor can extract content from PDF files, 
 with mixed types of content inside, like images, text, and tables. 
 
 After the PDF file going through the pipeline, 
