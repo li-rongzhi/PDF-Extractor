@@ -5,12 +5,12 @@
 This PDF content extractor can extract content from PDF files, 
 with mixed types of content inside, like images, text, and tables. 
 
-After the PDF file going through the pipeline, 
+After the PDF file goes through the pipeline, 
 the client will get a folder containing the following stuff: 
-- a folder called images for extracted images; 
-- a folder of text files extracted from each extracted image; 
+- A folder called images for extracted images; 
+- A folder of text files extracted from each extracted image; 
 - Excel files for tables; 
-- a txt file for all texts inside the PDF file.
+- A txt file for all texts inside the PDF file.
 
 (ps: folder exists only if not empty)
 
