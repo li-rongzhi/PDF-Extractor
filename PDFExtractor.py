@@ -1,6 +1,5 @@
 from collections import Counter
 from io import StringIO
-
 import PyPDF2
 import pandas as pd
 from tabula import read_pdf
