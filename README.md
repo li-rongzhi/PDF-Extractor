@@ -17,6 +17,9 @@ the client will get a folder containing the following stuff:
 
 ### Installation:
 1. Make sure you have all the following packages installed.
+   
+   ```pip install -r requirements.txt```
+
     - openai
     - tiktoken
     - opencv-python
