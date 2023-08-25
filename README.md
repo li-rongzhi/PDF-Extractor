@@ -12,7 +12,7 @@ the client will get a folder containing the following stuff:
 - Excel files for tables; 
 - a txt file for all texts inside the PDF file.
 
-(ps: folders exists only if not empty)
+(ps: folder exists only if not empty)
 
 
 ### Installation:
