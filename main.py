@@ -7,15 +7,18 @@ Testcase analysis:
 Annex A... -- table
 Basic... -- text
 mndsste... -- text
-Schedules... -- graphs
+Schedules... -- image
 Tritech... -- text
 VIMA... -- text with footnotes
+image-based-pdf-sample -- image
+sample.pdf -- text
+Sample data for data tables -- tables and texts
 """
 
 
 def main():
     dir_path = "testcases/inputs"
-    files = list(map(lambda file_name: "testcases/inputs/" + file_name, os.listdir(dir_path)))
+    files = list(map(lambda file_name: dir_path + "/" + file_name, os.listdir(dir_path)))
     PDFExtractor.pipeline(*files)
     # extra_process()
 

@@ -65,7 +65,6 @@ class PDFExtractor:
             with open(output_path, 'a', encoding="utf-8") as output_file:
                 # extract footnotes in the pdf file
                 footnotes = PDFExtractor.extract_footnotes(pdf_path)
-                print(footnotes)
                 # use external model to process extracted footnotes
                 if footnotes:
                     processed_footnotes = PDFExtractor.process_footnotes(footnotes.copy(), external_model=external_model)
@@ -162,7 +161,7 @@ class PDFExtractor:
                     # if they don't seem to be header
                     # check if it should combine with the last row of previous table
                     # or the first row of the current table
-                    if not is_header:
+                    if not is_header and not new_table.empty:
                         combine_with_previous = False
                         # combine column names(headers) with values in the first row
                         # and then send to the external model
@@ -221,6 +220,8 @@ class PDFExtractor:
                 workbook.save(output_path)
         except FileNotFoundError:
             print("File not found")
+        except IndexError:
+            print("Index out of bounds")
 
     @staticmethod
     def locate_images(pdf_path: str):

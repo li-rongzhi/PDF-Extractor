@@ -14,9 +14,6 @@ class PromptTemplate(Enum):
                         "Double quote contents in the same filed. " \
                         "Only return table contents without any extra sentences."
     ISREASONABLE_CHECK = """Do you think the following part are reasonable text? Just tell me 'Yes' or 'No'"""
-    # EXTRACT_TABLE_TITLE = "You will be provided with unstructured data, " \
-    #                     "and your task is to extract column names for the table in csv format."
-#                          "and your task is to extract the title for the table and only return the title"
 
 
 class ExternalModel:
@@ -47,6 +44,10 @@ class ExternalModel:
             # extract response content
             return response.choices[0].message.content
         except openai.error.InvalidRequestError as e:
+            print("Your token number may exceed the maximum.")
+            print(e)
+        except openai.error.AuthenticationError as e:
+            print("Incorrect API key provided.")
             print(e)
 
     @staticmethod
