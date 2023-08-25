@@ -5,7 +5,8 @@ from ExternalModel import PromptTemplate
 
 
 # Please replace the following path with your own one
-# check by cmd command "brew info tesseract"
+# check by cmd command "brew info tesseract"(if in mac and installed using Homebrew)
+# refer to the official website for more details
 # https://tesseract-ocr.github.io/tessdoc/Installation.html
 pytesseract.pytesseract.tesseract_cmd = '/opt/homebrew/bin/tesseract'
 
