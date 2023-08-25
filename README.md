@@ -33,5 +33,5 @@ the client will get a folder containing the following stuff:
 2. Install pytesseract. Step-to-step guidance could be found 
 in the following link of the [Tesseract's official website](https://tesseract-ocr.github.io/tessdoc/Installation.html).
 After installation, put the path to tesseract in OCR.py as indicated.
-3. Get an api key on [Openai's official website](https://platform.openai.com/account/api-keys) with your own accout. 
+3. Get an API key on [Openai's official website](https://platform.openai.com/account/api-keys) with your own account. 
 Then paste the key in [apikey.txt](apikey.txt) file without any extra information.
