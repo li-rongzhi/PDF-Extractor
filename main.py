@@ -1,27 +1,24 @@
 from ExternalModel import ExternalModel, PromptTemplate
 from PDFExtractor import PDFExtractor
 import os
+
 """
-Annex A... -- plain table
-Basic... -- plain text
-mndsste... -- plain text
+Testcase analysis:
+Annex A... -- table
+Basic... -- text
+mndsste... -- text
 Schedules... -- graphs
-Tritech... -- plain text
-VIMA... -- plain text   footnotes
+Tritech... -- text
+VIMA... -- text with footnotes
 """
 
-files = ['Tritech Announcement (MOU-NUS) 21 Nov 2008',
-         'VIMA - Model Non-Disclosure Agreement (22.11.2019)',
-         'Basic-Non-Disclosure-Agreement', 'mndsstecmou_annex',
-         'Annex A - List of MOUs signed at the 3rd SCI JIC Meeting',
-         'Schedules-to-MOU']
 dir_path = "testcases/inputs"
-files = list(map(lambda file_name: "testcases/inputs/" + file_name, os.listdir(dir_path)[3:]))
+files = list(map(lambda file_name: "testcases/inputs/" + file_name, os.listdir(dir_path)))
 PDFExtractor.pipeline(*files)
 """
-The following part restructure the text extracted from images in pdf file --- Schedule-to-MOU
-Due to dynamic responses from external model, 
-it is hard to always use a general way to manipulate response in csv format and write into an Excel file.
+The following part restructures the text extracted from images in PDF file --- Schedule-to-MOU
+Due to dynamic responses from the external model, 
+it is hard to always use a general way to manipulate responses in csv format and write them into an Excel file.
 """
 with open("apikey.txt", "r") as file:
     key = file.read()
