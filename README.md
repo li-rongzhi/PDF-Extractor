@@ -35,7 +35,7 @@ in the following link of the [Tesseract's official website](https://tesseract-oc
 After installation, put the path to tesseract in OCR.py as indicated.
 3. Get an API key on [Openai's official website](https://platform.openai.com/account/api-keys) with your own account. 
 Then paste the key in [apikey.txt](apikey.txt) file without any extra information.
-
+4. Please empty the output directory before running the given test cases.
 
 ### Testcases:
 Please refer to [testcases](testcases) folder for testcases.
